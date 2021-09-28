@@ -32,6 +32,8 @@ export default {
         this.answer = answer;
         this.img = image;
       } catch (error) {
+        this.answer = "no se pudo cargar el api";
+        this.img = null;
         console.error(error);
       }
     },
@@ -41,6 +43,8 @@ export default {
       // console.log({ value, oldValue });
 
       this.isValid = false;
+
+      console.log({ value});
 
       if (!value.includes("?")) return;
 
