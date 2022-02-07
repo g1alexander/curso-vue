@@ -2,10 +2,10 @@ import type { Pokemon } from "@/api/interface/Pokemon";
 import { pokemonApi } from "@/api/pokemonApi";
 import type { PokemonsOptions } from "./interfaces/PokemonOptions";
 
-const getPokemons = (): number[] =>
+export const getPokemons = (): number[] =>
   Array.from({ length: 650 }, (_, i) => i + 1);
 
-const getPokemonsName = async ([a, b, c, d]: number[]): Promise<
+export const getPokemonsName = async ([a, b, c, d]: number[]): Promise<
   PokemonsOptions[]
 > => {
   const promiseArr = [
