@@ -4,7 +4,7 @@ import {
   getPokemonsName,
   getPokemonsOptions,
 } from "@/helpers/getPokemonOptions";
-import type { PokemonsOptions } from "@/helpers/interfaces/PokemonOptions";
+import { mockPokemons } from "../mocks/pokemon.mock";
 
 describe("getPokemonOptions helpers", () => {
   test("debe regresar un arreglo de numeros", () => {
@@ -20,16 +20,9 @@ describe("getPokemonOptions helpers", () => {
   });
 
   test("debe de retornar un arreglo de 4 elementos", async () => {
-    const res: PokemonsOptions[] = [
-      { name: "bulbasaur", id: 1 },
-      { name: "ivysaur", id: 2 },
-      { name: "venusaur", id: 3 },
-      { name: "charmander", id: 4 },
-    ];
-
     const pokemons = await getPokemonsName([1, 2, 3, 4]);
 
-    expect(pokemons).toEqual(res);
+    expect(pokemons).toEqual(mockPokemons);
   });
 
   test("getPokemonsOptions debe de retornar un arreglo mezclado", async () => {
