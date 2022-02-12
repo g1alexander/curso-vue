@@ -1,0 +1,3 @@
+// Vitest Snapshot v1
+
+exports[`component PokemonPage > debe de hacer match con el snapshot 1`] = `"<h1>Espere por favor...</h1>"`;

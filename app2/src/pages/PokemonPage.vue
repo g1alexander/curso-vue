@@ -21,7 +21,7 @@ watchEffect(() => {
   }
 });
 
-const mountPokemon = async () => {
+const mountPokemon = async (): Promise<void> => {
   pokemonRes.value = await getPokemonsOptions();
 
   const pokemonId: number = Math.floor(Math.random() * pokemonRes.value.length);
@@ -39,10 +39,20 @@ const newGame = async () => {
   showPokemon.value = false;
   mountPokemon();
 };
+
+defineExpose({
+  mountPokemon,
+  newGame,
+  pokemonRes,
+  pokemon,
+  pokemonId,
+  message,
+  showPokemon,
+});
 </script>
 
 <template>
-  <h1 v-if="!pokemon">Espere por favor...</h1>
+  <h1 v-if="!pokemon.name">Espere por favor...</h1>
 
   <section v-else>
     <h1>¿Quien es el pokemon? {{ pokemonId }}</h1>

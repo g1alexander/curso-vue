@@ -20,6 +20,11 @@ const changeId = (id: number): void => {
   pokemon.pokemonId.value = id;
   pokemon.showPokemon.value = true;
 };
+
+defineExpose({
+  pokemon,
+  changeId,
+});
 </script>
 
 <template>
