@@ -1,11 +1,11 @@
 <template>
   <NavBar />
-  <main>
-    <aside>
+  <main class="d-flex">
+    <aside class="col-4">
       <EntryList />
     </aside>
 
-    <section>
+    <section class="col">
       <router-view />
     </section>
   </main>
