@@ -12,6 +12,10 @@ export const getEntriesByTerm =
     );
   };
 
-export const getEntryById = (state: JournalState): string => {
-  return "";
-};
+export const getEntryById =
+  (state: JournalState) =>
+  (id: string): Entry | undefined => {
+    const entry = state.entries.find((entry) => entry.id === id);
+
+    return entry && JSON.parse(JSON.stringify(entry));
+  };

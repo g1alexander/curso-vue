@@ -4,7 +4,7 @@ export interface JournalState {
 }
 
 export interface Entry {
-  id: number;
+  id: string;
   date: string;
   text: string;
   picture: string | null;

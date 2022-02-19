@@ -1,41 +1,96 @@
 <template>
-  <div class="entry-title d-flex justify-content-between p-2">
-    <div>
-      <span class="text-success fd-3 fw-bold">15</span>
-      <span class="mx-1 fs-3">Julio</span>
-      <span class="mx-2 fs-4 fw-light">2021, jueves</span>
+  <template v-if="entry">
+    <div class="entry-title d-flex justify-content-between p-2">
+      <div>
+        <span class="text-success fd-3 fw-bold">{{ day }}</span>
+        <span class="mx-1 fs-3">{{ month }}</span>
+        <span class="mx-2 fs-4 fw-light">{{ yearDay }}</span>
+      </div>
+
+      <div>
+        <button class="btn btn-danger mx-2">
+          Borrar <i class="fa fa-trash-alt"></i>
+        </button>
+        <button class="btn btn-primary mx-2">
+          Subir <i class="fa fa-upload"></i>
+        </button>
+      </div>
     </div>
 
-    <div>
-      <button class="btn btn-danger mx-2">
-        Borrar <i class="fa fa-trash-alt"></i>
-      </button>
-      <button class="btn btn-primary mx-2">
-        Subir <i class="fa fa-upload"></i>
-      </button>
+    <hr />
+
+    <div class="d-flex flex-column w-100 px-3 h-75">
+      <textarea v-model="entry.text" placeholder="¿Que sucedió hoy?"></textarea>
     </div>
-  </div>
 
-  <hr />
-
-  <div class="d-flex flex-column w-100 px-3 h-75">
-    <textarea placeholder="¿Que sucedió hoy?"></textarea>
-  </div>
-
+    <img
+      src="https://images.unsplash.com/photo-1645241910531-d32735b412a2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60"
+      class="img-thumbanail"
+    />
+  </template>
   <Fab icon="fa-save" />
-
-  <img
-    src="https://images.unsplash.com/photo-1645241910531-d32735b412a2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60"
-    class="img-thumbanail"
-  />
 </template>
 
 <script lang="ts">
 import { defineAsyncComponent, defineComponent } from "vue";
+import { mapGetters } from "vuex";
+import { getDate } from "../helpers/getDate";
+import { Entry } from "../store/interface/State";
 
 export default defineComponent({
   components: {
     Fab: defineAsyncComponent(() => import("../components/Fab.vue")),
+  },
+
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+  },
+  computed: {
+    ...mapGetters("journalModule", ["getEntryById"]),
+
+    day() {
+      const { day } = getDate(this.entry.date);
+      return day;
+    },
+
+    month() {
+      const { month } = getDate(this.entry.date);
+      return month;
+    },
+
+    yearDay() {
+      const { yearDay } = getDate(this.entry.date);
+      return yearDay;
+    },
+  },
+
+  data() {
+    return {
+      entry: {} as Entry,
+    };
+  },
+
+  methods: {
+    loadEntry() {
+      const entry: Entry = this.getEntryById(this.id);
+
+      if (!entry) return this.$router.push({ name: "no-entry" });
+
+      this.entry = entry;
+    },
+  },
+
+  created() {
+    this.loadEntry();
+  },
+
+  watch: {
+    id() {
+      this.loadEntry();
+    },
   },
 });
 </script>
