@@ -3,7 +3,7 @@ export interface JournalState {
   entries: Entry[];
 }
 
-interface Entry {
+export interface Entry {
   id: number;
   date: string;
   text: string;
