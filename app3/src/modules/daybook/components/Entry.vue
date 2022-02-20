@@ -39,7 +39,7 @@ export default defineComponent({
 
     day() {
       const date = new Date(this.entry.date);
-      return date.getDay();
+      return date.getDate();
     },
 
     mouth() {

@@ -28,12 +28,12 @@
       class="img-thumbanail"
     />
   </template>
-  <Fab icon="fa-save" />
+  <Fab icon="fa-save" @on:click="saveEntry" />
 </template>
 
 <script lang="ts">
 import { defineAsyncComponent, defineComponent } from "vue";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import { getDate } from "../helpers/getDate";
 import { Entry } from "../store/interface/State";
 
@@ -74,12 +74,32 @@ export default defineComponent({
   },
 
   methods: {
+    ...mapActions("journalModule", ["updateEntry", "createEntry"]),
     loadEntry() {
-      const entry: Entry = this.getEntryById(this.id);
+      let entry: Entry;
 
-      if (!entry) return this.$router.push({ name: "no-entry" });
-
+      if (this.id === "new") {
+        entry = {
+          id: "",
+          text: "",
+          date: new Date().toDateString(),
+          picture: "",
+        };
+      } else {
+        entry = this.getEntryById(this.id);
+        if (!entry) return this.$router.push({ name: "no-entry" });
+      }
       this.entry = entry;
+    },
+
+    async saveEntry() {
+      if (this.entry.id) {
+        await this.updateEntry(this.entry);
+      } else {
+        const id = await this.createEntry(this.entry);
+
+        this.$router.push({ name: "entry", params: { id } });
+      }
     },
   },
 

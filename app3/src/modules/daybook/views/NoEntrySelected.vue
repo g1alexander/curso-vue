@@ -3,7 +3,7 @@
     <h1 class="align-self-center">No hay nada seleccionado</h1>
   </div>
 
-  <Fab />
+  <Fab @on:click="newEntry" />
 </template>
 
 <script lang="ts">
@@ -12,6 +12,12 @@ import { defineAsyncComponent, defineComponent } from "vue";
 export default defineComponent({
   components: {
     Fab: defineAsyncComponent(() => import("../components/Fab.vue")),
+  },
+
+  methods: {
+    newEntry() {
+      this.$router.push("/daybook/new");
+    },
   },
 });
 </script>

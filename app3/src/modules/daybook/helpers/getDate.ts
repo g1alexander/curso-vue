@@ -10,7 +10,7 @@ export function getDate(dateString: string): GetDate {
   const date = new Date(dateString);
 
   return {
-    day: date.getDay(),
+    day: date.getDate(),
     month: months[date.getMonth()],
     yearDay: `${date.getFullYear()}, ${days[date.getDay()]}`,
   };

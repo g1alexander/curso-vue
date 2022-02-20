@@ -9,6 +9,16 @@
       />
     </div>
 
+    <div class="my-2 d-flex flex-column">
+      <button
+        @click="$router.push({ name: 'entry', params: { id: 'new' } })"
+        class="btn btn-primary mx-3"
+      >
+        <i class="fa fa-circle"></i>
+        Nueva entrada
+      </button>
+    </div>
+
     <div class="entry-scrollarea">
       <Entry v-for="entry in entries" :key="entry.id" :entry="entry" />
     </div>
