@@ -15,11 +15,13 @@ export const loadEntries = async ({ commit }: Context): Promise<void> => {
 
   const entries: Entry[] = [];
 
-  for (const id of Object.keys(data)) {
-    entries.push({
-      id,
-      ...data[id as keyof Entries],
-    });
+  if (data) {
+    for (const id of Object.keys(data)) {
+      entries.push({
+        id,
+        ...data[id as keyof Entries],
+      });
+    }
   }
   commit("setEntries", entries);
 };
@@ -52,4 +54,15 @@ export const createEntry = async (
   commit("addEntry", { id: data.name, date, picture, text });
 
   return data.name;
+};
+
+export const deleteEntry = async (
+  { commit }: Context,
+  id: string
+): Promise<void> => {
+  const { status } = await journalApi.delete(`/entries/${id}.json`);
+
+  if (status === 200) {
+    commit("deleteEntry", id);
+  }
 };

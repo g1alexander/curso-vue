@@ -8,10 +8,22 @@
       </div>
 
       <div>
-        <button class="btn btn-danger mx-2">
+        <button
+          v-if="entry.id"
+          @click="onDeleteEntry"
+          class="btn btn-danger mx-2"
+        >
           Borrar <i class="fa fa-trash-alt"></i>
         </button>
-        <button class="btn btn-primary mx-2">
+
+        <input
+          ref="imageSelector"
+          type="file"
+          @change="onSelectedImage"
+          v-show="false"
+        />
+
+        <button @click="onSelectImage" class="btn btn-primary mx-2">
           Subir <i class="fa fa-upload"></i>
         </button>
       </div>
@@ -23,10 +35,7 @@
       <textarea v-model="entry.text" placeholder="¿Que sucedió hoy?"></textarea>
     </div>
 
-    <img
-      src="https://images.unsplash.com/photo-1645241910531-d32735b412a2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60"
-      class="img-thumbanail"
-    />
+    <img v-if="localImage" :src="localImage" class="img-thumbanail" />
   </template>
   <Fab icon="fa-save" @on:click="saveEntry" />
 </template>
@@ -36,6 +45,8 @@ import { defineAsyncComponent, defineComponent } from "vue";
 import { mapActions, mapGetters } from "vuex";
 import { getDate } from "../helpers/getDate";
 import { Entry } from "../store/interface/State";
+import Swal from "sweetalert2";
+import { uploadImage } from "@/modules/daybook/helpers/uploadImage";
 
 export default defineComponent({
   components: {
@@ -70,11 +81,17 @@ export default defineComponent({
   data() {
     return {
       entry: {} as Entry,
+      localImage: null as string | null,
+      file: File,
     };
   },
 
   methods: {
-    ...mapActions("journalModule", ["updateEntry", "createEntry"]),
+    ...mapActions("journalModule", [
+      "updateEntry",
+      "createEntry",
+      "deleteEntry",
+    ]),
     loadEntry() {
       let entry: Entry;
 
@@ -93,13 +110,71 @@ export default defineComponent({
     },
 
     async saveEntry() {
+      Swal.fire({
+        title: "Guardando...",
+        allowOutsideClick: false,
+      });
+      Swal.showLoading();
+
+      // uploadImage(this.file);
+
       if (this.entry.id) {
         await this.updateEntry(this.entry);
       } else {
         const id = await this.createEntry(this.entry);
-
         this.$router.push({ name: "entry", params: { id } });
       }
+
+      Swal.fire("Guardado", "", "success");
+    },
+
+    async onDeleteEntry() {
+      const confirm = await Swal.fire({
+        showDenyButton: true,
+        title: "¿Estás seguro?",
+        text: "Esta acción no se puede deshacer",
+        icon: "warning",
+        confirmButtonText: "Sí, borrar",
+      });
+
+      if (confirm.isConfirmed) {
+        Swal.fire({
+          title: "Eliminando...",
+          allowOutsideClick: false,
+        });
+        Swal.showLoading();
+
+        await this.deleteEntry(this.entry.id);
+        this.$router.push({ name: "no-entry" });
+
+        Swal.fire("Eliminado", "", "success");
+      }
+    },
+
+    onSelectedImage(event: Event) {
+      const target = event.target as HTMLInputElement;
+      const file: File = (target.files as FileList)[0];
+      console.log(file);
+      if (!file) {
+        this.localImage = null;
+        // this.file = null;
+        return;
+      }
+      const fr = new FileReader();
+
+      fr.onload = () => (this.localImage = fr.result as string);
+      fr.readAsDataURL(file);
+
+      // this.file = file;
+
+      console.log(typeof this.file, this.file);
+      console.log(typeof file, file);
+    },
+
+    onSelectImage() {
+      const input = this.$refs.imageSelector as HTMLInputElement;
+
+      input.click();
     },
   },
 
