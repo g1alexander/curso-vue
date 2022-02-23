@@ -35,6 +35,11 @@
       <textarea v-model="entry.text" placeholder="¿Que sucedió hoy?"></textarea>
     </div>
 
+    <img
+      v-if="entry.picture && !localImage"
+      :src="entry.picture"
+      class="img-thumbanail"
+    />
     <img v-if="localImage" :src="localImage" class="img-thumbanail" />
   </template>
   <Fab icon="fa-save" @on:click="saveEntry" />
@@ -82,7 +87,7 @@ export default defineComponent({
     return {
       entry: {} as Entry,
       localImage: null as string | null,
-      file: File,
+      file: new File([], ""),
     };
   },
 
@@ -116,7 +121,11 @@ export default defineComponent({
       });
       Swal.showLoading();
 
-      // uploadImage(this.file);
+      const url = await uploadImage(this.file);
+
+      if (url) {
+        this.entry.picture = url;
+      }
 
       if (this.entry.id) {
         await this.updateEntry(this.entry);
@@ -126,6 +135,8 @@ export default defineComponent({
       }
 
       Swal.fire("Guardado", "", "success");
+
+      this.localImage = null;
     },
 
     async onDeleteEntry() {
@@ -154,10 +165,10 @@ export default defineComponent({
     onSelectedImage(event: Event) {
       const target = event.target as HTMLInputElement;
       const file: File = (target.files as FileList)[0];
-      console.log(file);
+
       if (!file) {
         this.localImage = null;
-        // this.file = null;
+        this.file = new File([], "");
         return;
       }
       const fr = new FileReader();
@@ -165,10 +176,7 @@ export default defineComponent({
       fr.onload = () => (this.localImage = fr.result as string);
       fr.readAsDataURL(file);
 
-      // this.file = file;
-
-      console.log(typeof this.file, this.file);
-      console.log(typeof file, file);
+      this.file = file;
     },
 
     onSelectImage() {

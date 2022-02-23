@@ -2,8 +2,8 @@ import { cloudinaryApi } from "@/api/cloudinaryApi";
 import { ImageAPI } from "@/api/interfaces/ImageApi";
 import { AxiosError } from "axios";
 
-export async function uploadImage(file: File): Promise<void> {
-  // if (!file) return "no hay imagen";
+export async function uploadImage(file: File): Promise<string> {
+  if (!file) return "";
 
   try {
     const formData = new FormData();
@@ -16,11 +16,11 @@ export async function uploadImage(file: File): Promise<void> {
       formData
     );
 
-    console.log(data);
-
-    // return data.secure_url;
+    return data.secure_url;
   } catch (error) {
     const err = error as AxiosError;
     console.log(err.response?.data);
+
+    return "";
   }
 }
