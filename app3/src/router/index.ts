@@ -5,6 +5,11 @@ const routes: Array<RouteRecordRaw> = [
   {
     ...daybook,
   },
+  {
+    path: "/",
+    name: "home",
+    component: () => import(/* webpackChunkName: "home" */ "@/views/Home.vue"),
+  },
 ];
 
 const router = createRouter({

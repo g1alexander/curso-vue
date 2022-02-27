@@ -54,6 +54,7 @@ import Swal from "sweetalert2";
 import { uploadImage } from "@/modules/daybook/helpers/uploadImage";
 
 export default defineComponent({
+  name: "EntryView",
   components: {
     Fab: defineAsyncComponent(() => import("../components/Fab.vue")),
   },

@@ -1,6 +1,6 @@
-import { RouteRecordRaw } from "vue-router";
+// import { RouteRecordRaw } from "vue-router";
 
-const router: RouteRecordRaw = {
+const router = {
   path: "/daybook",
   name: "daybook",
   component: () =>
@@ -24,7 +24,7 @@ const router: RouteRecordRaw = {
         import(
           /* webpackChunkName: "daybook-entry" */ "@/modules/daybook/views/EntryView.vue"
         ),
-      props: (route) => ({ id: route.params.id }),
+      props: (route: { params: { id: string } }) => ({ id: route.params.id }),
     },
   ],
 };
