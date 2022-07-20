@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tests componet EntryView debe de mostrar la entrada correctamente 1`] = `
+<div class="entry-title d-flex justify-content-between p-2">
+  <div><span class="text-success fd-3 fw-bold">22</span><span class="mx-1 fs-3">Marzo</span><span class="mx-2 fs-4 fw-light">2022, Martes</span></div>
+  <div><button class="btn btn-danger mx-2"> Borrar <i class="fa fa-trash-alt"></i></button><input type="file" style="display: none;"><button class="btn btn-primary mx-2"> Subir <i class="fa fa-upload"></i></button></div>
+</div>
+<hr>
+<div class="d-flex flex-column w-100 px-3 h-75"><textarea placeholder="¿Que sucedió hoy?"></textarea></div><img src="https://res.cloudinary.com/dlgvxohur/image/upload/v1645577816/journal/mrlu5sfmsyrkcozpyciy.jpg" class="img-thumbanail">
+<!--v-if-->
+<fab-stub icon="fa-save"></fab-stub>
+`;
