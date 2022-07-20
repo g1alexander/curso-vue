@@ -10,7 +10,7 @@ export const journalState = {
     },
     {
       date: "Tue Feb 22 2022",
-      id: "-MwZ3AI4JD9U9p5PJ3ay",
+      id: "-MwZ3AI4JD9U9p5PJy",
       picture:
         "https://res.cloudinary.com/dlgvxohur/image/upload/v1645577816/journal/mrlu5sfmsyrkcozpyciy.jpg",
       text: "dsadasdasd",
