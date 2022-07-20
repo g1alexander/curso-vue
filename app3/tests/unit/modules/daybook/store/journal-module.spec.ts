@@ -13,6 +13,10 @@ const createVuexStore = (initialState: JournalState) =>
     },
   });
 
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
 describe("vuex - pruebas en el journal module", () => {
   test("este es el estado inicial, debe tener este estado", () => {
     const store = createVuexStore(journalState);
@@ -124,6 +128,57 @@ describe("vuex - pruebas en el journal module", () => {
 
     await store.dispatch("journalModule/loadEntries");
 
+    expect(store.state.journalModule.entries.length).toBe(2);
+  });
+
+  test("actions: updateEntry", async () => {
+    const store = createVuexStore(journalState);
+
+    const updatedEntry = {
+      date: "Tue Feb 26 2023",
+      id: "-MwZ3AI4JD9U9p5PJ3ay",
+      picture:
+        "https://res.cloudinary.com/dlgvxohur/image/upload/v1645577816/journal/mrlu5sfmsyrkcozpyciy.jpg",
+      text: "update entrada 1 mock",
+      otroCampo: true,
+      otroMas: "hola",
+    };
+
+    await store.dispatch("journalModule/updateEntry", updatedEntry);
+
+    expect(store.state.journalModule.entries.length).toBe(2);
+
+    expect(
+      store.state.journalModule.entries.find((e) => e.id === updatedEntry.id)
+    ).toEqual({
+      date: "Tue Feb 26 2023",
+      id: "-MwZ3AI4JD9U9p5PJ3ay",
+      picture:
+        "https://res.cloudinary.com/dlgvxohur/image/upload/v1645577816/journal/mrlu5sfmsyrkcozpyciy.jpg",
+      text: "update entrada 1 mock",
+    });
+  });
+
+  test("actions: createEntry deleteEntry", async () => {
+    const store = createVuexStore(journalState);
+    const newEntry = {
+      date: "Tue Mar 30 2022",
+      text: "nueva entrada desde mock",
+      picture: null,
+    };
+    const id = await store.dispatch("journalModule/createEntry", newEntry);
+
+    expect(typeof id).toBe("string");
     expect(store.state.journalModule.entries.length).toBe(3);
+
+    expect(
+      store.state.journalModule.entries.find((e) => e.id === id)
+    ).toBeTruthy();
+
+    await store.dispatch("journalModule/deleteEntry", id);
+
+    expect(
+      store.state.journalModule.entries.find((e) => e.id === id)
+    ).toBeFalsy();
   });
 });

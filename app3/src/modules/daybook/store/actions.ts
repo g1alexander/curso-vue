@@ -30,14 +30,27 @@ export const updateEntry = async (
   { commit }: Context,
   entry: Entry
 ): Promise<void> => {
-  const { id, ...dataSave } = entry;
+  const { date, picture, text } = entry;
+
+  const dataSave: {
+    id?: string;
+    date: string;
+    picture: string | null;
+    text: string;
+  } = {
+    date,
+    picture,
+    text,
+  };
 
   const { data } = await journalApi.put<EntryAPI>(
-    `/entries/${id}.json`,
+    `/entries/${entry.id}.json`,
     dataSave
   );
 
-  commit("updateEntry", { id, ...data });
+  dataSave.id = entry.id;
+
+  commit("updateEntry", { ...dataSave });
 };
 
 export const createEntry = async (
