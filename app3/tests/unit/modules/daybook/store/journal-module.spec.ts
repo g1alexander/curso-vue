@@ -95,4 +95,35 @@ describe("vuex - pruebas en el journal module", () => {
     expect(storeEntries.length).toBe(2);
     expect(storeEntries.find((entry) => entry.id === addEntry.id)).toBeFalsy();
   });
+
+  // GETTERS ===============
+
+  test("getters: getEntriesByTerm getEntryById", () => {
+    const store = createVuexStore(journalState);
+
+    const [entry1, entry2] = journalState.entries;
+
+    expect(store.getters["journalModule/getEntriesByTerm"]("").length).toBe(2);
+    expect(store.getters["journalModule/getEntriesByTerm"]("soy").length).toBe(
+      1
+    );
+
+    expect(store.getters["journalModule/getEntriesByTerm"]("soy")).toEqual([
+      entry2,
+    ]);
+
+    expect(
+      store.getters["journalModule/getEntryById"]("-MwZ3AI4JD9U9p5PJ3ay")
+    ).toEqual(entry1);
+  });
+
+  // ACTIONS ===============
+
+  test("actions: loadEntries", async () => {
+    const store = createVuexStore({ isLoading: true, entries: [] });
+
+    await store.dispatch("journalModule/loadEntries");
+
+    expect(store.state.journalModule.entries.length).toBe(3);
+  });
 });
