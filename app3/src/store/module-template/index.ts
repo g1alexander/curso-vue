@@ -4,7 +4,7 @@
 // import * as mutations from "./mutations";
 
 // export const daybookModule = {
-//   namespace: true,
+//   namespaced: true,
 //   state,
 //   actions,
 //   mutations,

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import daybook from "@/modules/daybook/router";
+import auth from "@/modules/auth/router";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -9,6 +10,9 @@ const routes: Array<RouteRecordRaw> = [
     path: "/",
     name: "home",
     component: () => import(/* webpackChunkName: "home" */ "@/views/Home.vue"),
+  },
+  {
+    ...auth,
   },
 ];
 
