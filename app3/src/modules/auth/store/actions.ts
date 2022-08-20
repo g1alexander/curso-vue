@@ -75,3 +75,37 @@ export const signInUser = async (
     return { ok: false, message: err.response?.data.error.message };
   }
 };
+
+export const checkAuthentication = async (
+  store: Context
+): Promise<{ ok: boolean; message: string }> => {
+  const idToken = localStorage.getItem("idToken");
+  const refreshToken = localStorage.getItem("refreshToken");
+
+  if (!idToken) {
+    store.commit("logout");
+    return { ok: false, message: "no hay token" };
+  }
+
+  try {
+    const { data } = await authApi.post(":lookup", {
+      idToken,
+    });
+
+    const { displayName: name, email } = data.users[0];
+
+    const user = {
+      name,
+      email,
+    };
+
+    store.commit("loginUser", { user, idToken, refreshToken });
+
+    return { ok: true, message: "meloo" };
+  } catch (error) {
+    store.commit("logout");
+    const err = error as AxiosError;
+
+    return { ok: false, message: err.response?.data.error.message };
+  }
+};

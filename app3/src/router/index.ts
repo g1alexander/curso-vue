@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import daybook from "@/modules/daybook/router";
 import auth from "@/modules/auth/router";
+import isAuthenticateGuard from "./auth-guard";
 
 const routes: Array<RouteRecordRaw> = [
   {
     ...daybook,
+    beforeEnter: [isAuthenticateGuard],
   },
   {
     path: "/",

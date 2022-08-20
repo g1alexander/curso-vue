@@ -29,3 +29,13 @@ export const loginUser = (state: AuthState, data: Data) => {
   state.user = data.user;
   state.status = "authenticated";
 };
+
+export const logout = (state: AuthState) => {
+  state.user = null;
+  state.status = "not-authenticated";
+  state.idtoken = null;
+  state.refreshtoken = null;
+
+  localStorage.removeItem("idToken");
+  localStorage.removeItem("refreshToken");
+};

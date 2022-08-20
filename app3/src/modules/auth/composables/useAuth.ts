@@ -1,4 +1,5 @@
 import { useStore } from "@/store";
+import { computed } from "vue";
 
 interface User {
   name?: string;
@@ -21,8 +22,17 @@ export const useAuth = () => {
     return response as { ok: boolean; message: string };
   };
 
+  const checkAuth = async () => {
+    const response = await store.dispatch("authModule/checkAuthentication");
+
+    return response as { ok: boolean; message: string };
+  };
+
   return {
     loginUser,
     createUser,
+    checkAuth,
+
+    authStatus: computed(() => store.getters["authModule/currentState"]),
   };
 };
