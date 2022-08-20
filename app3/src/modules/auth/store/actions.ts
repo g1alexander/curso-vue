@@ -46,3 +46,32 @@ export const createUser = async (
     return { ok: false, message: err.response?.data.error.message };
   }
 };
+
+export const signInUser = async (
+  store: Context,
+  user: User
+): Promise<{ ok: boolean; message: string }> => {
+  const { email, password } = user;
+
+  try {
+    const { data } = await authApi.post(":signInWithPassword", {
+      email,
+      password,
+      returnSecureToken: true,
+    });
+
+    const { idToken, refreshToken, displayName } = data;
+
+    user.name = displayName;
+
+    delete user.password;
+
+    store.commit("loginUser", { user, idToken, refreshToken });
+
+    return { ok: true, message: "ok" };
+  } catch (error: unknown) {
+    const err = error as AxiosError;
+
+    return { ok: false, message: err.response?.data.error.message };
+  }
+};

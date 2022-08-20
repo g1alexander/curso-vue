@@ -48,11 +48,14 @@
 </template>
 
 <script lang="ts">
+import Swal from "sweetalert2";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { useAuth } from "../composables/useAuth";
 
 export default {
   setup() {
+    const router = useRouter();
     const { createUser } = useAuth();
 
     const useForm = ref({
@@ -64,7 +67,16 @@ export default {
     return {
       useForm,
       onSubmit: async () => {
-        createUser(useForm.value);
+        const { message, ok } = await createUser(useForm.value);
+
+        if (!ok)
+          return Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: message,
+          });
+
+        return router.push({ name: "no-entry" });
       },
     };
   },
