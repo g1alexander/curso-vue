@@ -20,3 +20,7 @@ export const addEntry = (state: JournalState, entry: Entry): void => {
 export const deleteEntry = (state: JournalState, id: string): void => {
   state.entries = state.entries.filter((entry) => entry.id !== id);
 };
+
+export const clearEntries = (state: JournalState): void => {
+  state.entries = [];
+};

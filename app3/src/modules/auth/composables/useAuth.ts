@@ -28,11 +28,19 @@ export const useAuth = () => {
     return response as { ok: boolean; message: string };
   };
 
+  const logout = () => {
+    store.commit("authModule/logout");
+
+    store.commit("journalModule/clearEntries");
+  };
+
   return {
     loginUser,
     createUser,
     checkAuth,
+    logout,
 
     authStatus: computed(() => store.getters["authModule/currentState"]),
+    username: computed(() => store.getters["authModule/username"]),
   };
 };
