@@ -1,4 +1,4 @@
-import { useStore } from "@/store";
+import { useStore } from "vuex";
 import { computed } from "vue";
 
 interface User {
