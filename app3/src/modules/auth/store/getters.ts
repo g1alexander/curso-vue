@@ -8,5 +8,5 @@ export const currentState = (state: AuthState) => {
 };
 
 export const username = (state: AuthState) => {
-  return state.user?.name;
+  return state.user?.name || "";
 };
