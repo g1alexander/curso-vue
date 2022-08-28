@@ -35,6 +35,8 @@ export default {
         logout();
         router.push({ name: "auth-login" });
       },
+
+      router,
     };
   },
 };
