@@ -50,8 +50,8 @@ export default {
     const { loginUser } = useAuth();
 
     const useForm = ref({
-      email: "gvfgfg@sad.com",
-      password: "dasa3s",
+      email: "",
+      password: "",
     });
 
     return {
