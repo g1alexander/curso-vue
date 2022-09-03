@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { useStore } from "vuex";
-const store = useStore();
+import { usePlacesStore } from "./composables";
+import MapView from "./components/mapview/mapView.vue";
 
-console.log(store.state);
+usePlacesStore();
 </script>
 
 <template>
-  <main>hola</main>
+  <main>
+    <MapView />
+
+    <img src="@/assets/logo.svg" width="100" alt="" />
+  </main>
 </template>
