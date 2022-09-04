@@ -6,7 +6,7 @@ const searchApi = axios.create({
     language: "es",
     access_token:
       "pk.eyJ1IjoiZzFhbGV4YW5kZXIiLCJhIjoiY2w3bWhtaXRtMWEyZDN5bXFmZXl3M2x0cCJ9.ztYp1Q4WIa5NW0R3DdsYfw",
-    limit: 5,
+    limit: 3,
   },
 });
 

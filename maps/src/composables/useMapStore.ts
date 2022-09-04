@@ -1,5 +1,6 @@
 import type { Feature } from "@/interfaces/Places";
 import type { StateInterface } from "@/store";
+import type { LngLat } from "@/store/maps/actions";
 import type mapboxgl from "mapbox-gl";
 import { computed } from "vue";
 import { useStore } from "vuex";
@@ -18,5 +19,9 @@ export const useMapStore = () => {
 
     // getters
     isMapReady: computed(() => store.getters["mapModule/isMapready"]),
+
+    //actions
+    getRouteBetweenPoints: async (start: LngLat, end: LngLat) =>
+      await store.dispatch("mapModule/getRouteBetweenPoints", { start, end }),
   };
 };

@@ -4,9 +4,9 @@ import { ref, watch } from "vue";
 
 export default {
   setup() {
-    const { isLoadingPlaces, places } = usePlacesStore();
+    const { isLoadingPlaces, places, userLocation } = usePlacesStore();
 
-    const { map, setPlaceMarkers } = useMapStore();
+    const { map, setPlaceMarkers, getRouteBetweenPoints } = useMapStore();
 
     const activePlace = ref("");
 
@@ -32,6 +32,20 @@ export default {
           center: [lng, lat],
           zoom: 14,
         });
+      },
+
+      getRouteDirection: async (place: Feature) => {
+        if (!userLocation.value) return;
+
+        const [lng, lat] = place.center;
+
+        const [startLng, startLat] = userLocation.value;
+
+        const start: [number, number] = [startLng, startLat];
+
+        const end: [number, number] = [lng, lat];
+
+        await getRouteBetweenPoints(start, end);
       },
     };
   },
