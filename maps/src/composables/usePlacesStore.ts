@@ -22,5 +22,9 @@ export const usePlacesStore = () => {
     isUserLocationReady: computed<boolean>(
       () => store.getters["placesModule/isUserLocationReady"]
     ),
+
+    //actions
+    searchByTerm: async (query = "") =>
+      await store.dispatch("placesModule/searchPlacesByTerm", query),
   };
 };
