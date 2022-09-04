@@ -1,5 +1,9 @@
+import { usePlacesStore } from "@/composables";
+
 export default {
   setup() {
-    return {};
+    const { isLoadingPlaces, places } = usePlacesStore();
+
+    return { isLoadingPlaces, places };
   },
 };

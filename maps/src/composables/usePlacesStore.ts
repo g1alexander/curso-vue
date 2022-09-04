@@ -17,6 +17,8 @@ export const usePlacesStore = () => {
     userLocation: computed(
       () => store.state.placesModule.userLocation || [0, 0]
     ),
+    places: computed(() => store.state.placesModule.places),
+    isLoadingPlaces: computed(() => store.state.placesModule.isLoadingPlaces),
 
     //getters
     isUserLocationReady: computed<boolean>(

@@ -1,6 +1,9 @@
 import type { ActionTree } from "vuex";
 import type { PlacesState } from "./state";
 import type { StateInterface } from "../index";
+import { searchApi } from "@/apis";
+import type { PlacesResponse } from "@/interfaces/Places";
+import type { Feature } from "../../interfaces/Places";
 
 const actions: ActionTree<PlacesState, StateInterface> = {
   getInitialLocation({ commit }) {
@@ -19,8 +22,30 @@ const actions: ActionTree<PlacesState, StateInterface> = {
     );
   },
 
-  async searchPlacesByTerm({ commit, state }, query) {
-    console.log("vuex", query);
+  async searchPlacesByTerm(
+    { commit, state },
+    query: string
+  ): Promise<Feature[]> {
+    if (query.length === 0) {
+      commit("setPlaces", []);
+      return [];
+    }
+
+    if (!state.userLocation) {
+      throw new Error("no hay ubicacion");
+    }
+
+    commit("setIsLoadingPlaces", true);
+
+    const resp = await searchApi.get<PlacesResponse>(`/${query}.json`, {
+      params: {
+        proximity: state.userLocation?.join(","),
+      },
+    });
+
+    commit("setPlaces", resp.data.features);
+
+    return resp.data.features;
   },
 };
 
