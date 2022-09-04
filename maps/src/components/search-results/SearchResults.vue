@@ -8,13 +8,30 @@
       v-for="place in places"
       :key="place.id"
       class="list-group list-group-item-action mb-3"
+      :class="{ active: activePlace === place.id }"
+      @click="onPlaceClicked(place)"
     >
       <h5>{{ place.text }}</h5>
       <p>{{ place.place_name }}</p>
 
-      <button class="btn btn-outline-primary">Direccion</button>
+      <button
+        class="btn"
+        :class="
+          activePlace === place.id ? 'btn-outline-light' : 'btn-outline-primary'
+        "
+      >
+        Direccion
+      </button>
     </li>
   </ul>
 </template>
 
 <script lang="ts" src="./SearchResults"></script>
+
+<style scoped>
+.active {
+  background-color: #0d6efd;
+  color: #fff;
+  padding: 1rem;
+}
+</style>
